@@ -19,6 +19,15 @@
                 <input type="text" class="form-control" id="slug" name="slug" value="{{ $project->slug }}"
                     required>
             </div>
+            <label for="type_id">Type:</label>
+            <select name="type_id" id="type_id">
+                <option value="">None</option>
+                @foreach ($types as $type)
+                    <option value="{{ $type->id }}" {{ $project->type_id == $type->id ? 'selected' : '' }}>
+                        {{ $type->name }}
+                    </option>
+                @endforeach
+            </select>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>

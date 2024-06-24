@@ -15,7 +15,7 @@
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Slug</th>
-                                <th>Actions</th>
+                                <th>Type</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -24,6 +24,7 @@
                                     <td>{{ $project->title }}</td>
                                     <td>{{ $project->description }}</td>
                                     <td>{{ $project->slug }}</td>
+                                    <td>{{ $project->type ? $project->type->name : 'None' }}</td>
                                     <td>
                                         <a href="{{ route('admin.projects.edit', $project->id) }}"
                                             class="btn btn-sm btn-primary">Edit</a>

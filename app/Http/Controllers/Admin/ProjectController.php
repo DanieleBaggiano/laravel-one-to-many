@@ -14,7 +14,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::all();
+        $projects = \App\Models\Project::with('type')->get();
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -23,7 +23,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('admin.projects.create');
+        $types = \App\Models\Type::all();
+        return view('admin.projects.create', compact('types'));
     }
 
     /**
@@ -35,6 +36,7 @@ class ProjectController extends Controller
             'title' => 'required|max:255',
             'description' => 'required',
             'slug' => 'required|unique:projects,slug',
+            'type_id' => 'nullable|exists:types,id',
         ]);
 
         $slug = Str::slug($request->slug);
@@ -49,6 +51,7 @@ class ProjectController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'slug' => $slug,
+            'type_id' => $request->type_id,
         ]);
 
         return redirect()->route('admin.projects.index')
@@ -68,8 +71,9 @@ class ProjectController extends Controller
      */
     public function edit(string $id)
     {
-        $project = Project::findOrFail($id);
-        return view('admin.projects.edit', compact('project'));
+        $project = \App\Models\Project::findOrFail($id);
+        $types = \App\Models\Type::all();
+        return view('admin.projects.edit', compact('project', 'types'));
     }
 
     /**
@@ -81,6 +85,7 @@ class ProjectController extends Controller
             'title' => 'required|max:255',
             'description' => 'required',
             'slug' => 'required|unique:projects,slug,' . $id,
+            'type_id' => 'nullable|exists:types,id',
         ]);
 
         $project = Project::findOrFail($id);
@@ -88,6 +93,7 @@ class ProjectController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'slug' => $request->slug,
+            'type_id' => $request->type_id,
         ]);
 
         return redirect()->route('admin.projects.index')
